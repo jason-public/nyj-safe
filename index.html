@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남양주시 AI 딥러닝 기반 침수 감지 시스템</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body data-color-scheme="dark">
+    <!-- 메인 대시보드 -->
+    <div id="mainDashboard" class="main-dashboard">
+        <!-- 헤더 -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <h1>남양주시 AI 딥러닝 기반 침수 감지 시스템</h1>
+                    <p>실시간 모니터링 대시보드</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </header>
+
+        <!-- 네비게이션 -->
+        <nav class="dashboard-nav">
+            <button class="nav-btn active" onclick="showTab('overview')">
+                <i class="fas fa-tachometer-alt"></i>
+                전체 현황
+            </button>
+            <button class="nav-btn" onclick="showTab('monitoring')">
+                <i class="fas fa-video"></i>
+                실시간 모니터링
+            </button>
+            <button class="nav-btn" onclick="showTab('system')">
+                <i class="fas fa-cogs"></i>
+                시스템 상태
+            </button>
+            <button class="nav-btn" onclick="showTab('alerts')">
+                <i class="fas fa-exclamation-triangle"></i>
+                경보 이력
+            </button>
+        </nav>
+
+        <!-- 전체 현황 탭 -->
+        <div id="overviewTab" class="tab-content active">
+            <div class="overview-grid">
+                <!-- 시스템 개요 -->
+                <div class="card overview-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-info-circle"></i> 시스템 개요</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="overview-info">
+                            <div class="info-item">
+                                <span class="label">사업명</span>
+                                <span class="value">AI 딥러닝 기반 침수 감지 시스템</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">완공일</span>
+                                <span class="value">2026년 12월</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">정확도</span>
+                                <span class="value success">96%</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">연계기관</span>
+                                <span class="value">행정안전부</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 전체 상태 -->
+                <div class="card status-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-shield-check"></i> 전체 상태</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="status-indicator">
+                            <div class="status-level normal" id="overallStatus">
+                                <i class="fas fa-check-circle"></i>
+                                <span>정상</span>
+                            </div>
+                            <div class="status-details">
+                                <p>모든 시스템이 정상 작동 중입니다</p>
+                                <small>마지막 업데이트: <span id="lastUpdate"></span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 날씨 정보 -->
+                <div class="card weather-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-cloud-sun"></i> 날씨 정보</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="weather-info">
+                            <div class="weather-main">
+                                <i class="fas fa-sun weather-icon"></i>
+                                <div>
+                                    <div class="temperature">22°C</div>
+                                    <div class="weather-status">맑음</div>
+                                </div>
+                            </div>
+                            <div class="weather-details">
+                                <div class="weather-item">
+                                    <span>습도</span>
+                                    <span>65%</span>
+                                </div>
+                                <div class="weather-item">
+                                    <span>강우량</span>
+                                    <span class="rainfall">0mm/h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 설치 위치 현황 -->
+                <div class="card locations-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-map-marker-alt"></i> 설치 위치 현황</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="locations-grid" id="locationsGrid">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하드웨어 상태 -->
+                <div class="card hardware-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-microchip"></i> 하드웨어 상태</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="hardware-grid" id="hardwareGrid">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 최근 경보 이력 -->
+                <div class="card alerts-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-bell"></i> 최근 경보 이력</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="recent-alerts" id="recentAlerts">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 실시간 모니터링 탭 -->
+        <div id="monitoringTab" class="tab-content">
+            <div class="monitoring-header">
+                <div class="location-tabs" id="locationTabs">
+                    <!-- 동적으로 생성됩니다 -->
+                </div>
+            </div>
+            <div class="monitoring-content" id="monitoringContent">
+                <!-- 동적으로 생성됩니다 -->
+            </div>
+        </div>
+
+        <!-- 시스템 상태 탭 -->
+        <div id="systemTab" class="tab-content">
+            <div class="system-grid">
+                <!-- 하드웨어 상태 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-server"></i> 하드웨어 구성 요소</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="system-components" id="systemHardware">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 소프트웨어 상태 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-code"></i> 소프트웨어 모듈</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="system-components" id="systemSoftware">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 스마트시티 연계 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-network-wired"></i> 스마트시티 플랫폼 연계</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="integration-status">
+                            <div class="status status--success">
+                                <i class="fas fa-link"></i>
+                                연결됨 - 실시간 데이터 공유
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 유관기관 연계 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-users"></i> 유관기관 연계 현황</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="agency-grid">
+                            <div class="agency-item">
+                                <i class="fas fa-phone"></i>
+                                <span>112 (경찰청)</span>
+                                <span class="status--success">연결됨</span>
+                            </div>
+                            <div class="agency-item">
+                                <i class="fas fa-fire"></i>
+                                <span>119 (소방청)</span>
+                                <span class="status--success">연결됨</span>
+                            </div>
+                            <div class="agency-item">
+                                <i class="fas fa-building"></i>
+                                <span>경찰서</span>
+                                <span class="status--success">연결됨</span>
+                            </div>
+                            <div class="agency-item">
+                                <i class="fas fa-ambulance"></i>
+                                <span>소방서</span>
+                                <span class="status--success">연결됨</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 경보 이력 탭 -->
+        <div id="alertsTab" class="tab-content">
+            <div class="alerts-grid">
+                <!-- 경보 통계 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-chart-bar"></i> 경보 통계</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="alertsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 경보 이력 테이블 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-history"></i> 경보 이력</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="alert-history" id="alertHistory">
+                            <!-- 동적으로 생성됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 대응 시간 통계 -->
+                <div class="card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-stopwatch"></i> 대응 시간 통계</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="response-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">2.3초</div>
+                                <div class="stat-label">평균 감지 시간</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">15초</div>
+                                <div class="stat-label">평균 대응 시간</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">100%</div>
+                                <div class="stat-label">자동 대응 성공률</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 경보 모달 -->
+    <div id="alertModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 경보 발생</h3>
+                <button class="modal-close" onclick="closeAlertModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="alertModalBody">
+                <!-- 동적으로 생성됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
